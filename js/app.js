@@ -11,6 +11,27 @@
  */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
+var matchingPair = [];
+var icons = ['diamond',
+    'diamond',
+    'paper-plane-o',
+    'paper-plane-o',
+    'anchor',
+    'anchor',
+    'bolt',
+    'bolt',
+    'cube',
+    'cube',
+    'leaf',
+    'leaf',
+    'bicycle',
+    'bicycle',
+    'bomb',
+    'bomb'
+];
+var progress = 0;
+var moves = 0;
+addCard();
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -21,10 +42,77 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
 
+function clickCard(card) {
+    moves++;
+    card.srcElement.setAttribute("class", card.srcElement.className + ' open show');
+    matchingPair.push(card.srcElement.children[0]);
+    console.log(matchingPair);
+    if (matchingPair.length === 2)
+    if (!isPaired()) {
+        setTimeout(wrongGuess, 1000);
+    }
+    console.log(progress);
+    console.log(moves);
+    if (progress === 16) {
+        setTimeout(msgSend, 500);
+    }
+}
+
+function removeCard() {
+   document.getElementsByClassName('deck')[0].innerHTML = '';
+   matchingPair = [];
+   moves = 0;
+   progress = 0;
+}
+
+function addCard() {
+    removeCard();
+    shuffle(icons).forEach(function (d) {
+        var className = "fa fa-" + d;
+        var card = document.createElement("li");
+        card.className = "card";
+        card.addEventListener("click", function (d) {
+            clickCard(d);
+        }, true);
+        var node = document.createElement("i");
+        node .className = className;
+        card.appendChild(node);
+        document.getElementsByClassName('deck')[0].appendChild(card);
+    })
+}
+
+function isPaired() {
+    if (matchingPair[0].className === matchingPair[1].className)
+    {
+        matchingPair.forEach(function (d) {
+            d.parentNode.setAttribute("class", "card match");
+
+        });
+        matchingPair = [];
+        progress = progress +2;
+        return true
+    } else {
+        matchingPair.forEach(function (d) {
+            console.log(d.parentNode);
+            d.parentNode.setAttribute("class", "card different");
+        });
+        return false;
+    }
+}
+
+function wrongGuess() {
+    matchingPair.forEach(function (d) {
+        d.parentNode.setAttribute("class", "card");
+    });
+    matchingPair = [];
+}
+
+function msgSend() {
+    alert("Congratulations! you finish the game with " + moves +" steps");
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
