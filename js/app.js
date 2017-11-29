@@ -31,6 +31,7 @@ var icons = ['diamond',
 ];
 var progress = 0;
 var moves = 0;
+var stars = 3;
 addCard();
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -46,26 +47,44 @@ function shuffle(array) {
 }
 
 function clickCard(card) {
+    console.log(card);
     moves++;
-    card.srcElement.setAttribute("class", card.srcElement.className + ' open show');
+    card.srcElement.setAttribute("class", card.srcElement.className + ' open');
     matchingPair.push(card.srcElement.children[0]);
-    console.log(matchingPair);
-    if (matchingPair.length === 2)
-    if (!isPaired()) {
-        setTimeout(wrongGuess, 1000);
+    assessScore();
+   // console.log(matchingPair);
+        if (matchingPair.length === 2)
+            if (!isPaired()) {
+                setTimeout(wrongGuess, 1000);
+            }
+        console.log(progress);
+        console.log(moves);
+        if (progress === 16) {
+            setTimeout(msgSend, 500);
+        }
+}
+
+function assessScore() {
+    document.getElementsByClassName('moves')[0].innerHTML = moves;
+    console.log(document.getElementsByClassName('stars')[0].children);
+    if (moves === 22) {
+        document.getElementsByClassName('stars')[0].children[0].style.color = 'grey';
+        stars--;
     }
-    console.log(progress);
-    console.log(moves);
-    if (progress === 16) {
-        setTimeout(msgSend, 500);
+    if (moves === 30) {
+        document.getElementsByClassName('stars')[0].children[1].style.color = 'grey';
+        stars--;
     }
 }
 
 function removeCard() {
    document.getElementsByClassName('deck')[0].innerHTML = '';
+   document.getElementsByClassName('stars')[0].children[0].style.color = 'black';
+   document.getElementsByClassName('stars')[0].children[1].style.color = 'black';
    matchingPair = [];
    moves = 0;
    progress = 0;
+   stars = 3;
 }
 
 function addCard() {
@@ -111,7 +130,7 @@ function wrongGuess() {
 }
 
 function msgSend() {
-    alert("Congratulations! you finish the game with " + moves +" steps");
+    alert("Congratulations! you finish the game within " + moves +" steps and " + stars + "star");
 }
 
 /*

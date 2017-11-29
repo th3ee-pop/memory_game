@@ -67,29 +67,33 @@ h1 {
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    transform: rotateY(180deg);
     background: #02b3e4;
     cursor: default;
-    transition: all 0.2s;
+    transition: all 0.15s;
+    font-size: 33px;
 }
 
 
 .deck .card.show {
+    background: #02b3e4;
+    cursor: default;
+    transition: all 0.2s;
     font-size: 33px;
 }
 
 .deck .card.match {
+    transform: rotateY(180deg);
     cursor: default;
     background: #02ccba;
     font-size: 33px;
-    transition: all 0.2s;
 }
 
 .deck .card.different {
+    transform: rotateY(180deg);
     cursor: default;
     background: indianred;
     font-size: 33px;
-    transition: all 0.2s;
 }
 
 /*
@@ -103,10 +107,9 @@ h1 {
 }
 
 .score-panel .stars {
-    margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
+    margin: 0 5px 5px 0;
 }
 
 .score-panel .stars li {
